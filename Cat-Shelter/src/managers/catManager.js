@@ -7,6 +7,10 @@ exports.addBreed = async function (breed) {
     });
 };
 
+exports.getBreed = async function () {
+    return await Breed.find({});
+};
+
 exports.createCat = async function (name, description, img, breed) {
     const newCat = Cat.create({
         name,
