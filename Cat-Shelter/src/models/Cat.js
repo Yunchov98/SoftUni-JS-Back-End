@@ -9,7 +9,7 @@ const catSchema = new mongoose.Schema({
         type: String,
     },
     img: {
-        required: [true, 'Image is required'],
+        type: String,
     },
     breed: {
         type: String,
