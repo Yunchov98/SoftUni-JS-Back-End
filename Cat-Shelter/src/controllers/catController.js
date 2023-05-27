@@ -33,6 +33,19 @@ router.get('/edit-cat/:catId', (req, res) => {
         .then(cat => res.render('editCat', { cat }));
 });
 
+router.post('/edit-cat/:catId', (req, res) => {
+    const catId = req.params.catId;
+    const {
+        name,
+        description,
+        img,
+        breed,
+    } = req.body;
+
+    catManager.editCat(catId, name, description, img, breed);
+    res.redirect('/');
+});
+
 router.get('/new-home/:catId', (req, res) => {
     const catPromise = catManager.getCatById(req.params.catId)
         .then(cat => res.render('catShelter', { cat }));
