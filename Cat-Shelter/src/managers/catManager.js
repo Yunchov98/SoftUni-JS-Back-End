@@ -3,27 +3,27 @@ const Cat = require('../models/Cat');
 
 exports.addBreed = async function (breed) {
     await Breed.create({
-        breed: breed,
+        breed,
     });
 };
 
 exports.getBreed = async function () {
-    return await Breed.find({});
+    return await Breed.find().lean();
 };
 
 exports.createCat = async function (name, description, img, breed) {
-    const newCat = Cat.create({
+    await Cat.create({
         name,
         description,
         img,
         breed,
     });
 
-    return newCat;
+
 };
 
 exports.getCats = async function () {
-    return await Cat.find({});
+    return await Cat.find().lean();
 };
 
 exports.getCatById = async function (catId) {
