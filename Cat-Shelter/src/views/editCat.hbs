@@ -3,13 +3,12 @@
     <form action="/cats/edit-cat/{{_id}}" method="POST" class="cat-form">
         <h2>Edit Cat</h2>
         <label for="name">Name</label>
-        <input type="text" id="name" value="{{name}}">
+        <input type="text" name="name" id="name" value="{{name}}">
         <label for="description">Description</label>
-        <textarea
-            id="description">{{description}}</textarea>
+        <textarea name="description" id="description">{{description}}</textarea>
         <label for="image">Image</label>
-        <input type="text" id="image" value="{{img}}">
-        <label for="group">Breed</label>
+        <input type="text" name="image" id="image" value="{{img}}">
+        <label for="group" name="breed">Breed</label>
         <select id="group">
             <option value="{{breed}}">{{breed}}</option>
         </select>
