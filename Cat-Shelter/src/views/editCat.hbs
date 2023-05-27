@@ -1,6 +1,6 @@
 <main>
     {{#with cat}}
-    <form action="/cats/edit-cat/:catId" method="POST" class="cat-form" enctype="multipart/form-data">
+    <form action="/cats/edit-cat/{{_id}}" method="POST" class="cat-form">
         <h2>Edit Cat</h2>
         <label for="name">Name</label>
         <input type="text" id="name" value="{{name}}">
