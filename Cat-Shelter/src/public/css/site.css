@@ -220,3 +220,14 @@ body > form > label:nth-child(3) {
     background-color: lightskyblue;
     margin-bottom: 1.5rem;
 }
+
+.congrats-main{
+    text-align: center;
+    padding: 10px;
+}
+
+.congrats {
+    text-align: center;
+    padding: 5px;
+    margin: 3px;
+}
