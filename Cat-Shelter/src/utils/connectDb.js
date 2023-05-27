@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const address = require('./address');
 
 async function connectDb() {
     console.log('succefully connected to the databse');
-    return await mongoose.connect('mongodb://127.0.0.1:27017/catShelter');
+    return await mongoose.connect(address);
 }
 
 module.exports = connectDb;
