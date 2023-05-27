@@ -7,9 +7,11 @@ const catSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        required: [true, 'Description is required'],
     },
     img: {
         type: String,
+        required: [true, 'Image is required'],
     },
     breed: {
         type: String,
