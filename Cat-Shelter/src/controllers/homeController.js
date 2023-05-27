@@ -2,8 +2,8 @@ const router = require('express').Router();
 const catManager = require('../managers/catManager');
 
 router.get('/', (req, res) => {
-    const cats = catManager.getCats()
-        .then(catInfo => res.render('home', { catInfo }));
+    const catsPromise = catManager.getCats()
+        .then(cats => res.render('home', { cats }));
 });
 
 module.exports = router;
