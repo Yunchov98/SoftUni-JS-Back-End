@@ -6,4 +6,8 @@ router.get('/', (req, res) => {
         .then(cats => res.render('home', { cats }));
 });
 
+router.get('/congrats', (req, res) => {
+    res.render('congratulations');
+});
+
 module.exports = router;
