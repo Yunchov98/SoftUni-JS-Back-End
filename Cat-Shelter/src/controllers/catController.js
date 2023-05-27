@@ -28,4 +28,14 @@ router.post('/add-cat', (req, res) => {
     res.redirect('/');
 });
 
+router.get('/edit-cat/:catId', (req, res) => {
+    const catPromise = catManager.getCatById(req.params.catId)
+        .then(cat => res.render('editCat', { cat }));
+});
+
+router.get('/new-home/:catId', (req, res) => {
+    const catPromise = catManager.getCatById(req.params.catId)
+        .then(cat => res.render('catShelter', { cat }));
+});
+
 module.exports = router;
