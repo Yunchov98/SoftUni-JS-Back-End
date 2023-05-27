@@ -27,7 +27,7 @@ exports.getCats = async function () {
 };
 
 exports.getCatById = async function (catId) {
-    return await Cat.findById(catId);
+    return await Cat.findById(catId).lean();
 };
 
 exports.editCat = async function (catId, name, breed, description, img) {
