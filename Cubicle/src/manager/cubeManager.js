@@ -9,10 +9,10 @@ exports.createCube = async function (name, description, imageUrl, difficultyLeve
         name,
         description,
         imageUrl,
-        difficultyLevel,
+        difficultyLevel: Number(difficultyLevel),
     });
 };
 
 exports.getCubeById = async function (cubeId) {
-    return Cube.findById(cubeId);
+    return await Cube.findById(cubeId).lean();
 };
