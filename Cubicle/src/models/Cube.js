@@ -5,6 +5,10 @@ const cubeSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Name is required!'],
     },
+    imageUrl: {
+        type: String,
+        required: [true, 'Image is required!'],
+    },
     description: {
         type: String,
         required: [true, 'Description is required!'],
