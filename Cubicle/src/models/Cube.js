@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const cubeSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        required: [true, 'ID is required!'],
-    },
     name: {
         type: String,
         required: [true, 'Name is required!'],
