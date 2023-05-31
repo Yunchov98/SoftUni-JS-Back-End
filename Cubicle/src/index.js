@@ -11,6 +11,8 @@ const app = express();
 expressConfig(app);
 handlebarsConfig(app);
 app.use(routes);
-connectDb();
+connectDb()
+    .then(() => console.log('Connection with DB - successfully'))
+    .catch(err => console.log(err));
 
 app.listen(PORT, () => console.log('Server is listen on port 5000...'));
