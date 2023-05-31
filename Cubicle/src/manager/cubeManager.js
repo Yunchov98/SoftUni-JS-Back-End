@@ -1,18 +1,30 @@
 const Cube = require('../models/Cube');
 
-exports.getCubes = async function () {
-    return await Cube.find().lean();
+exports.getCubes = async (search, from, to) => {
+    let result = await Cube.find().lean();
+
+    if (search) {
+        result = result.filter(cube => cube.name.toLowerCase().includes(search.toLowerCase()));
+    }
+
+    if (from) {
+        result = result.filter(cube => cube.difficultyLevel >= Number(from));
+    }
+
+    if (to) {
+        result = result.filter(cube => cube.difficultyLevel <= Number(to));
+    }
+
+    return result;
 };
 
-exports.createCube = async function (name, description, imageUrl, difficultyLevel) {
-    await Cube.create({
-        name,
-        description,
-        imageUrl,
-        difficultyLevel: Number(difficultyLevel),
-    });
+exports.createCube = (name, description, imageUrl, difficultyLevel) => {
+    const cube = new Cube(name, description, imageUrl, difficultyLevel);
+
+    return cube.save();
 };
 
-exports.getCubeById = async function (cubeId) {
-    return await Cube.findById(cubeId).lean();
-};
+exports.getCubeById = (cubeId) => Cube.findById(cubeId);
+exports.getOneWithAccessories = (cubeId) => this.getCubeById(cubeId).populate('accessories');
+exports.attachAccessory = async (cubeId, accessoryId) => Cube.findByIdAndUpdate(cubeId, { $push: { accessories: accessoryId } });
+
