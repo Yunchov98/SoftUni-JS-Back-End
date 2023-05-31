@@ -10,10 +10,10 @@
   {{#each cubes}}
   <div class="cube">
     <img class="cube"
-      src="{{this.imageUrl}}">
-    <p class="name">{{this.name}}</p>
-    <p><span>Difficulty level:</span> {{this.difficultyLevel}}</p>
-    <a class="btn" href="/cubes/details/{{this._id}}">Details</a>
+      src="{{imageUrl}}">
+    <p class="name">{{name}}</p>
+    <p><span>Difficulty level:</span> {{difficultyLevel}}</p>
+    <a class="btn" href="/cubes/details/{{_id}}">Details</a>
   </div>
   {{/each}}
 </main>
