@@ -16,7 +16,11 @@ const cubeSchema = new mongoose.Schema({
     difficultyLevel: {
         type: Number,
         required: [true, 'Difficulty level is required!'],
-    }
+    },
+    accessories: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Accessory',
+    }]
 });
 
 module.exports = mongoose.model('Cube', cubeSchema);
