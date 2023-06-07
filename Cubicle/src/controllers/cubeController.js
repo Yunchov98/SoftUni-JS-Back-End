@@ -52,4 +52,19 @@ router.post('/attach-accessory/:cubeId', async (req, res) => {
     res.redirect(`/cubes/details/${cubeId}`);
 });
 
+router.get('/edit/:cubeId', async (req, res) => {
+    const cube = await cubeManager.getCubeById(req.params.cubeId).lean();
+
+    res.render('cube/edit', { cube });
+});
+
+router.post('/edit/:cubeId', async (req, res) => {
+    const cubeId = req.params.cubeId;
+    const { name, description, imageUrl, difficultyLevel } = req.body;
+
+    await cubeManager.updateCube(cubeId, name, description, imageUrl, difficultyLevel);
+
+    res.redirect(`/cubes/details/${cubeId}`);
+});
+
 module.exports = router;
