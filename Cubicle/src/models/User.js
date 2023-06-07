@@ -1,16 +1,25 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-const userScehma = new mongoose.Schema({
-    username: {
-        type: String,
-        required: [true, 'Username is required!'],
-    },
-    password: {
-        type: String,
-        required: [true, 'Password is required'],
-    }
+const userSchema = new mongoose.Schema({
+    username: String,
+    password: String,
 });
 
-const User = mongoose.model('User', userScehma);
+userSchema.virtual('repeatPassword')
+    .set(function (value) {
+        if (value !== this.password) {
+            throw new mongoose.MongooseError('Password dont match!');
+        }
+    });
+
+userSchema.pre('save', async function () {
+    const hash = await bcrypt.hash(this.password, 10);
+
+    this.password = hash;
+});
+
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
