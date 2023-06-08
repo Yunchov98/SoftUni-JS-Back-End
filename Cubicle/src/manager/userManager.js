@@ -25,7 +25,7 @@ exports.login = async (username, password) => {
         username: user.username,
     };
 
-    const token = await jwtPromises.sign(payload, SECRET, { expiresIn: '2d' });
 
+    const token = await jwtPromises.sign(payload, SECRET, { expiresIn: '2d' });
     return token;
 };
