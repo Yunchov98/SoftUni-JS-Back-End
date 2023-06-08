@@ -28,5 +28,6 @@ exports.getCubeById = (cubeId) => Cube.findById(cubeId);
 exports.getOneWithAccessories = (cubeId) => this.getCubeById(cubeId).populate('accessories');
 exports.attachAccessory = async (cubeId, accessoryId) => Cube.findByIdAndUpdate(cubeId, { $push: { accessories: accessoryId } });
 exports.updateCube = (cubeId, name, description, imageUrl, difficultyLevel) => Cube.findByIdAndUpdate(cubeId, { name, description, imageUrl, difficultyLevel });
+exports.deleteCube = (cubeId) => Cube.findByIdAndDelete(cubeId);
 
 
