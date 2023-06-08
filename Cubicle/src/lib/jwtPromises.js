@@ -14,9 +14,9 @@ const sign = (payload, token, options) => {
     return promise;
 };
 
-const verify = (token, secret) => {
+const verify = (token, secret, options) => {
     const promise = new Promise((resolve, reject) => {
-        jwt.verify(token, secret, (err, result) => {
+        jwt.verify(token, secret, options, (err, result) => {
             if (err) {
                 return reject(err);
             }
@@ -30,7 +30,7 @@ const verify = (token, secret) => {
 
 const jwtPromises = {
     sign,
-    verify,
+    verify
 };
 
 module.exports = jwtPromises;
