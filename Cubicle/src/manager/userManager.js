@@ -1,13 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwtPromises = require('../lib/jwtPromises');
 
-const SECRET = 'veryBigSecret';
+const { SECRET } = require('../utils/secret');
 const User = require('../models/User');
 
 
-exports.register = (username, password, repassword) => User.create(username, password, repassword);
+exports.register = (userData) => User.create(userData);
 exports.login = async (username, password) => {
-
     const user = await User.findOne({ username });
 
     if (!user) {
@@ -24,7 +23,6 @@ exports.login = async (username, password) => {
         _id: user._id,
         username: user.username,
     };
-
 
     const token = await jwtPromises.sign(payload, SECRET, { expiresIn: '2d' });
     return token;
