@@ -3,6 +3,7 @@ const router = require('express').Router();
 const cubeManager = require('../manager/cubeManager');
 const accessoryManager = require('../manager/accessoryManager');
 const { isAuth } = require('../middlewares/authMiddleware');
+const { getDiffOptViewData } = require('../utils/viewHelper');
 
 router.get('/create', isAuth, (req, res) => {
     res.render('cube/create');
@@ -60,7 +61,13 @@ router.post('/attach-accessory/:cubeId', isAuth, async (req, res) => {
 router.get('/edit/:cubeId', isAuth, async (req, res) => {
     const cube = await cubeManager.getCubeById(req.params.cubeId).lean();
 
-    res.render('cube/edit', { cube });
+    if (cube.owner.toString() !== req.user?._id) {
+        return res.redirect('/404');
+    }
+
+    const options = getDiffOptViewData(cube.difficultyLevel);
+
+    res.render('cube/edit', { cube, options });
 });
 
 router.post('/edit/:cubeId', isAuth, async (req, res) => {
@@ -70,6 +77,20 @@ router.post('/edit/:cubeId', isAuth, async (req, res) => {
     await cubeManager.updateCube(cubeId, name, description, imageUrl, difficultyLevel);
 
     res.redirect(`/cubes/details/${cubeId}`);
+});
+
+router.get('/delete/:cubeId', isAuth, async (req, res) => {
+    const cube = await cubeManager.getCubeById(req.params.cubeId).lean();
+
+    const options = getDiffOptViewData(cube.difficultyLevel);
+
+    res.render('cube/delete', { cube, options });
+});
+
+router.post('/delete/:cubeId', isAuth, async (req, res) => {
+    await cubeManager.deleteCube(req.params.cubeId);
+
+    res.redirect('/');
 });
 
 module.exports = router;
