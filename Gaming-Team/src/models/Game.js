@@ -6,7 +6,7 @@ const gameSchema = new mongoose.Schema({
         required: [true, 'Name is required'],
     },
 
-    image: {
+    imageUrl: {
         type: String,
         required: [true, 'Image is required'],
     },
