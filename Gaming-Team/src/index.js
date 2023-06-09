@@ -9,7 +9,7 @@ expressConfigs(app);
 handlebarsConfigs(app);
 
 app.get('/', (req, res) => {
-    res.render('Hello World');
+    res.render('home');
 });
 
 app.listen(3000, () => 'Server is listening on port 3000');
