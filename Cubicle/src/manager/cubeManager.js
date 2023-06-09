@@ -1,21 +1,25 @@
 const Cube = require('../models/Cube');
 
 exports.getCubes = async (search, from, to) => {
-    let result = await Cube.find().lean();
+    try {
+        let result = await Cube.find().lean();
 
-    if (search) {
-        result = result.filter(cube => cube.name.toLowerCase().includes(search.toLowerCase()));
+        if (search) {
+            result = result.filter(cube => cube.name.toLowerCase().includes(search.toLowerCase()));
+        }
+
+        if (from) {
+            result = result.filter(cube => cube.difficultyLevel >= Number(from));
+        }
+
+        if (to) {
+            result = result.filter(cube => cube.difficultyLevel <= Number(to));
+        }
+
+        return result;
+    } catch (error) {
+        console.log(error);
     }
-
-    if (from) {
-        result = result.filter(cube => cube.difficultyLevel >= Number(from));
-    }
-
-    if (to) {
-        result = result.filter(cube => cube.difficultyLevel <= Number(to));
-    }
-
-    return result;
 };
 
 exports.createCube = (name, description, imageUrl, difficultyLevel) => {

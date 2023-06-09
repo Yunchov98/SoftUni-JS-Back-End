@@ -34,7 +34,9 @@ router.post('/login', async (req, res, next) => {
 
         res.redirect('/');
     } catch (error) {
-        next(error);
+        const errorMessages = getErrorMessage(error);
+
+        res.render('user/login', { errorMessages });
     }
 });
 

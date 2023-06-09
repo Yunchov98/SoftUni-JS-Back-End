@@ -17,22 +17,30 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.path('username').validate(async (username) => {
-    const usernameCount = await mongoose.models.User.countDocuments({ username });
+    try {
+        const usernameCount = await mongoose.models.User.countDocuments({ username });
 
-    return !usernameCount;
+        return !usernameCount;
+    } catch (error) {
+        console.log(error);
+    }
 }, 'Username alredy exists');
 
 userSchema.virtual('repeatPassword')
     .set(function (value) {
         if (value !== this.password) {
-            throw new mongoose.MongooseError('Password dont match!');
+            throw new Error('Password dont match!');
         }
     });
 
 userSchema.pre('save', async function () {
-    const hash = await bcrypt.hash(this.password, 10);
+    try {
+        const hash = await bcrypt.hash(this.password, 10);
 
-    this.password = hash;
+        this.password = hash;
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 
