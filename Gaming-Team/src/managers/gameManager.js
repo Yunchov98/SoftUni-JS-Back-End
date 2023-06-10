@@ -1,6 +1,22 @@
 const Game = require('../models/Game');
 
-exports.getGames = () => Game.find();
+exports.getGames = async (name, platform) => {
+    try {
+        let result = await Game.find().lean();
+
+        if(name) {
+            result = result.filter(game => game.name.toLowerCase().includes(name.toLowerCase()));
+        }
+
+        if(platform) {
+            result = result.filter(game => game.platform.toLocaleLowerCase().includes(platform.toLowerCase()));
+        }
+
+        return result;
+    } catch (error) {
+        console.log(error);
+    }
+};
 exports.createGame = (gameData) => Game.create(gameData);
 
 
