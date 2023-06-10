@@ -5,6 +5,7 @@ const handlebarsConfigs = require('./configs/handlebarsConfigs');
 const connectDb = require('./configs/database');
 const { PORT } = require('./configs/utils');
 const routes = require('./routes');
+const errorHandler = require('./middlewares/errorHandlerMiddleware');
 
 const app = express();
 
@@ -12,6 +13,7 @@ expressConfigs(app);
 handlebarsConfigs(app);
 
 app.use(routes);
+app.use(errorHandler);
 
 connectDb()
     .then(() => console.log('DB connected successfully'))

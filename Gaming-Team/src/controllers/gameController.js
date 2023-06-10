@@ -3,6 +3,7 @@ const router = require('express').Router();
 const gameManager = require('../managers/gameManager');
 const { isAuth } = require('../middlewares/authMiddleware');
 const { getPlatformsViewData } = require('../utils/viewHelper');
+const { getErrorMessages } = require('../utils/errorHelper');
 
 router.get('/catalog', async (req, res) => {
     const games = await gameManager.getGames().lean();
@@ -30,7 +31,9 @@ router.post('/create', isAuth, async (req, res) => {
 
         res.redirect('/games/catalog');
     } catch (error) {
-        console.log(error);
+        const errorMessages = getErrorMessages(error);
+
+        res.render('game/create', { errorMessages });
     }
 
 });
