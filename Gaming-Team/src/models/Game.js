@@ -39,10 +39,10 @@ const gameSchema = new mongoose.Schema({
         ref: 'User',
     }],
 
-    owner: [{
+    owner: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
-    }],
+    },
 });
 
 // TODO: platfrom validation for PC, Nintendo, PS4, etc...

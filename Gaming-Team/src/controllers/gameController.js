@@ -6,9 +6,13 @@ const { getPlatformsViewData } = require('../utils/viewHelper');
 const { getErrorMessages } = require('../utils/errorHelper');
 
 router.get('/catalog', async (req, res) => {
-    const games = await gameManager.getGames();
+    try {
+        const games = await gameManager.getGames();
 
-    res.render('game/catalog', { games });
+        res.render('game/catalog', { games });
+    } catch (error) {
+        res.redirect('/404');
+    }
 });
 
 router.get('/create', isAuth, (req, res) => {
@@ -53,7 +57,7 @@ router.get('/details/:gameId', async (req, res) => {
 
         res.render('game/details', { game, isOwner, isBought, user });
     } catch (error) {
-        console.log(error);
+        res.redirect('/404');
     }
 
 });
@@ -72,7 +76,7 @@ router.get('/edit/:gameId', isAuth, async (req, res) => {
 
         res.render('game/edit', { game, options });
     } catch (error) {
-        console.log(error);
+        res.redirect('/404');
     }
 });
 
@@ -85,7 +89,29 @@ router.post('/edit/:gameId', isAuth, async (req, res) => {
 
         res.redirect(`/games/details/${gameId}`);
     } catch (error) {
-        console.log(error);
+        const errorMessages = getErrorMessages(error);
+
+        router.render('game/edit', { errorMessages });
+    }
+});
+
+router.get('/buy/:gameId', async (req, res) => {
+    try {
+        await gameManager.buyGame(req.params.gameId, req.user._id);
+
+        res.redirect(`/games/details/${req.params.gameId}`);
+    } catch (error) {
+        res.redirect('/404');
+    }
+});
+
+router.get('/delete/:gameId', async (req, res) => {
+    try {
+        await gameManager.deleteGame(req.params.gameId);
+
+        res.redirect('/games/catalog');
+    } catch (error) {
+        res.redirect('/404');
     }
 });
 
