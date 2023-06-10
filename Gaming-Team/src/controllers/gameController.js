@@ -6,7 +6,7 @@ const { getPlatformsViewData } = require('../utils/viewHelper');
 const { getErrorMessages } = require('../utils/errorHelper');
 
 router.get('/catalog', async (req, res) => {
-    const games = await gameManager.getGames().lean();
+    const games = await gameManager.getGames();
 
     res.render('game/catalog', { games });
 });
