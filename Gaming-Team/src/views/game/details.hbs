@@ -14,18 +14,22 @@
             </div>
             <div class="product-btn">
                 <!--Only for registered user and author of the publication -->
+                {{#if user}}
                 {{#if isOwner}}
                 <div class="author">
-                    <a href="#" class="btn-edit">Edit</a>
-                    <a href="#" class="btn-delete">Delete</a>
+                    <a href="/games/edit/{{game._id}}" class="btn-edit">Edit</a>
+                    <a href="/games/delete/{{game._id}}" class="btn-delete">Delete</a>
                 </div>
-                {{/if}}
-
+                {{else}}
+                {{#if isBought}}
                 <!-- Logged in user who has not yet buy this game code-->
-                <!-- <a href="#" class="btn-buy">Buy</a> -->
-
+                <p class="buy-message">You have already bought this game</p>
+                {{else}}
                 <!-- Logged in user who has already buy this game code-->
-                <!-- <p class="buy-message">You have already bought this game</p> -->
+                <a href="/games/details/{{game._id}}" class="btn-buy">Buy</a>
+                {{/if}}
+                {{/if}}
+                {{/if}}
             </div>
         </div>
     </section>
