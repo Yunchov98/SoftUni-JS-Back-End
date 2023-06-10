@@ -17,13 +17,22 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/games/catalog">All Games Code</a></li>
                 <li><a href="/search">Search</a></li>
+                {{#if isAuthenticated}}
                 <li><a href="/games/create">Create Game Offer</a></li>
+                <li><a href="/users/logout">Logout</a></li>
+                {{else}}
                 <li><a href="/users/login">Login</a></li>
                 <li><a href="/users/register">Register</a></li>
-                <li><a href="/users/logout">Logout</a></li>
+                {{/if}}
             </ul>
         </nav>
     </header>
+
+    <div>
+        <div class="errorContainer">
+            <p>Error</p>
+        </div>
+    </div>
 
     {{{body}}}
 
