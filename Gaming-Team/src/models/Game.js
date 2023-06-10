@@ -44,6 +44,14 @@ const gameSchema = new mongoose.Schema({
 
 // TODO: platfrom validation for PC, Nintendo, PS4, etc...
 
+gameSchema.path('platform').validate((platform) => {
+    const availablePlatforms = ['PC', 'Nintendo', 'PS4', 'PS5', 'XBOX'];
+
+    if (!availablePlatforms.includes(platform)) {
+        throw new Error(`Only ${availablePlatforms.join(' ')} are available`);
+    }
+});
+
 const Game = mongoose.model('Game', gameSchema);
 
 module.exports = Game;
