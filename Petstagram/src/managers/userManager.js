@@ -26,3 +26,5 @@ exports.login = async (username, password) => {
     const token = await jwtPromises.sign(payload, SECRET, { expiresIn: '3d' });
     return token;
 };
+
+exports.findUser = (userId) => User.findById(userId);
