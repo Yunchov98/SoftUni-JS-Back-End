@@ -60,10 +60,20 @@ router.post('/details/:photoId', async (req, res) => {
 
     try {
         await photoManager.addComment(req.params.photoId, req.user.username, comment);
-        
+
         res.redirect(`/pets/details/${req.params.photoId}`);
     } catch (error) {
         console.log(error);
+    }
+});
+
+router.get('/delete/:photoId', async (req, res) => {
+    try {
+        await photoManager.deletePhoto(req.params.photoId);
+
+        res.redirect('/pets/catalog');
+    } catch (error) {
+        res.render('404');
     }
 });
 
