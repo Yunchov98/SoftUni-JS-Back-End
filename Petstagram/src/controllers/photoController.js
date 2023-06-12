@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const photoManager = require('../managers/photoManager');
-const Photo = require('../models/Photo');
+const userManager = require('../managers/userManager');
 const { getErrorMessage } = require('../utils/errorHelper');
 
 router.get('/catalog', async (req, res) => {
@@ -40,12 +40,30 @@ router.post('/create', async (req, res) => {
 });
 
 router.get('/details/:photoId', async (req, res) => {
+    const user = req.user;
+
     try {
         const photo = await photoManager.getPhotoById(req.params.photoId).lean();
 
-        res.render('pet/details', { photo });
+        const commentList = photo.commentList;
+        const isOwner = req.user?._id.toString() === photo.owner._id.toString();
+        const isNotOwner = req.user?._id.toString() !== photo.owner._id.toString();
+
+        res.render('pet/details', { photo, isOwner, isNotOwner, user, commentList });
     } catch (error) {
         res.render('404');
+    }
+});
+
+router.post('/details/:photoId', async (req, res) => {
+    const { comment } = req.body;
+
+    try {
+        await photoManager.addComment(req.params.photoId, req.user.username, comment);
+        
+        res.redirect(`/pets/details/${req.params.photoId}`);
+    } catch (error) {
+        console.log(error);
     }
 });
 
