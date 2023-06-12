@@ -67,6 +67,31 @@ router.post('/details/:photoId', async (req, res) => {
     }
 });
 
+router.get('/edit/:photoId', async (req, res) => {
+    try {
+        const photo = await photoManager.getPhotoById(req.params.photoId).lean();
+
+        res.render('pet/edit', { photo });
+    } catch (error) {
+        res.render('404');
+    }
+});
+
+router.post('/edit/:photoId', async (req, res) => {
+    const photoId = req.params.photoId;
+    const { name, age, description, location, imageUrl } = req.body;
+
+    try {
+        await photoManager.updatePhoto(photoId, name, age, description, location, imageUrl);
+
+        res.redirect(`/pets/details/${photoId}`);
+    } catch (error) {
+        const errorMessages = getErrorMessage(error);
+
+        res.render('pet/edit', { errorMessages });
+    }
+});
+
 router.get('/delete/:photoId', async (req, res) => {
     try {
         await photoManager.deletePhoto(req.params.photoId);
