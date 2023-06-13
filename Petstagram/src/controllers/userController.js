@@ -4,6 +4,7 @@ const userManager = require('../managers/userManager');
 const photoManager = require('../managers/photoManager');
 const { getErrorMessage } = require('../utils/errorHelper');
 const { isAuth } = require('../middlewares/authMiddleware');
+const { TOKEN_KEY } = require('../configs/utils');
 
 router.get('/register', (req, res) => {
     res.render('user/register');
@@ -13,12 +14,9 @@ router.post('/register', async (req, res) => {
     const { username, email, password, repeatPassword } = req.body;
 
     try {
-        await userManager.register({ username, email, password, repeatPassword });
+        const token = await userManager.register({ username, email, password, repeatPassword });
 
-        const token = await userManager.login(username, password);
-
-        res.cookie('auth', token, { httpOnly: true });
-
+        res.cookie(TOKEN_KEY, token);
         res.redirect('/');
     } catch (error) {
         const errorMessages = getErrorMessage(error);
@@ -36,7 +34,7 @@ router.post('/login', async (req, res) => {
     try {
         const token = await userManager.login(username, password);
 
-        res.cookie('auth', token, { httpOnly: true });
+        res.cookie(TOKEN_KEY, token, { httpOnly: true });
 
         res.redirect('/');
     } catch (error) {
@@ -46,7 +44,7 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/logout', isAuth, (req, res) => {
-    res.clearCookie('auth');
+    res.clearCookie(TOKEN_KEY);
     res.redirect('/');
 });
 

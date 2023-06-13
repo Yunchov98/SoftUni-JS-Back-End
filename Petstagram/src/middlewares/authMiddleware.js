@@ -1,8 +1,8 @@
-const { SECRET } = require('../configs/utils');
+const { SECRET, TOKEN_KEY } = require('../configs/utils');
 const jwtPromises = require('../lib/jwtPromises');
 
 exports.auth = async (req, res, next) => {
-    const token = req.cookies['auth'];
+    const token = req.cookies[TOKEN_KEY];
 
     if (token) {
         const payload = await jwtPromises.verify(token, SECRET);
