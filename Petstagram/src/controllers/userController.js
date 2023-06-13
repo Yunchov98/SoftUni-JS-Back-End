@@ -1,7 +1,9 @@
 const router = require('express').Router();
 
 const userManager = require('../managers/userManager');
+const photoManager = require('../managers/photoManager');
 const { getErrorMessage } = require('../utils/errorHelper');
+const { isAuth } = require('../middlewares/authMiddleware');
 
 router.get('/register', (req, res) => {
     res.render('user/register');
@@ -43,13 +45,21 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', isAuth, (req, res) => {
     res.clearCookie('auth');
     res.redirect('/');
 });
 
-router.get('/profile', (req, res) => {
-    res.render('user/profile');
+router.get('/profile', isAuth, async (req, res) => {
+    const user = req.user;
+
+    try {
+        const photos = await photoManager.getUserPhotos(user._id).lean();
+
+        res.render('user/profile', { user, photos });
+    } catch (error) {
+        res.redirect('/404');
+    }
 });
 
 module.exports = router;
