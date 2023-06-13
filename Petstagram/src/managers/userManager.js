@@ -21,6 +21,7 @@ exports.login = async (username, password) => {
     const payload = {
         _id: user._id,
         username: user.username,
+        email: user.email,
     };
 
     const token = await jwtPromises.sign(payload, SECRET, { expiresIn: '3d' });
