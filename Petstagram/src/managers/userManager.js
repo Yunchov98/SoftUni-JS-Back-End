@@ -1,10 +1,15 @@
-const jwtPromises = require('../lib/jwtPromises');
 const bcrypt = require('bcrypt');
 
 const User = require('../models/User');
-const { SECRET } = require('../configs/utils');
+const generateToken = require('../utils/generateToken');
 
-exports.register = (userData) => User.create(userData);
+exports.register = async (userData) => {
+    const createdUser = User.create(userData);
+
+    const token = await generateToken(createdUser);
+
+    return token;
+};
 exports.login = async (username, password) => {
     const user = await User.findOne({ username });
 
@@ -18,13 +23,8 @@ exports.login = async (username, password) => {
         throw new Error('Wrong username or password');
     }
 
-    const payload = {
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-    };
+    const token = generateToken(user);
 
-    const token = await jwtPromises.sign(payload, SECRET, { expiresIn: '3d' });
     return token;
 };
 
