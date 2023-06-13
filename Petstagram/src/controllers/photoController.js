@@ -1,8 +1,8 @@
 const router = require('express').Router();
 
 const photoManager = require('../managers/photoManager');
-const userManager = require('../managers/userManager');
 const { getErrorMessage } = require('../utils/errorHelper');
+const { isAuth } = require('../middlewares/authMiddleware');
 
 router.get('/catalog', async (req, res) => {
     try {
@@ -14,11 +14,11 @@ router.get('/catalog', async (req, res) => {
     }
 });
 
-router.get('/create', (req, res) => {
+router.get('/create', isAuth, (req, res) => {
     res.render('pet/create');
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', isAuth, async (req, res) => {
     const { name, age, description, location, imageUrl } = req.body;
 
     try {
@@ -55,7 +55,7 @@ router.get('/details/:photoId', async (req, res) => {
     }
 });
 
-router.post('/details/:photoId', async (req, res) => {
+router.post('/details/:photoId', isAuth, async (req, res) => {
     const { comment } = req.body;
 
     try {
@@ -67,7 +67,7 @@ router.post('/details/:photoId', async (req, res) => {
     }
 });
 
-router.get('/edit/:photoId', async (req, res) => {
+router.get('/edit/:photoId', isAuth, async (req, res) => {
     try {
         const photo = await photoManager.getPhotoById(req.params.photoId).lean();
 
@@ -77,7 +77,7 @@ router.get('/edit/:photoId', async (req, res) => {
     }
 });
 
-router.post('/edit/:photoId', async (req, res) => {
+router.post('/edit/:photoId', isAuth, async (req, res) => {
     const photoId = req.params.photoId;
     const { name, age, description, location, imageUrl } = req.body;
 
@@ -92,7 +92,7 @@ router.post('/edit/:photoId', async (req, res) => {
     }
 });
 
-router.get('/delete/:photoId', async (req, res) => {
+router.get('/delete/:photoId', isAuth, async (req, res) => {
     try {
         await photoManager.deletePhoto(req.params.photoId);
 
