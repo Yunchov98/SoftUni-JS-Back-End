@@ -56,4 +56,16 @@ router.get('/details/:cryptoId', async (req, res) => {
     }
 });
 
+router.get('/buy/:cryptoId', async (req, res) => {
+    const cryptoId = req.params.cryptoId;
+
+    try {
+        await cryptoManager.buyCrypto(cryptoId, req.user._id);
+
+        res.redirect(`/crypto/details/${cryptoId}`);
+    } catch (error) {
+        res.render('404');
+    }
+});
+
 module.exports = router;
