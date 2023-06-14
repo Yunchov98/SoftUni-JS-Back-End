@@ -23,13 +23,36 @@ router.post('/create', async (req, res) => {
     try {
         cryptoValidator(name, imageUrl, price, description, payment);
 
-        await cryptoManager.createCrypto({ name, imageUrl, price, description, payment });
+        await cryptoManager.createCrypto({
+            name,
+            imageUrl,
+            price: Number(price),
+            description,
+            payment,
+            owner: req.user._id,
+        });
 
         res.redirect('/crypto/catalog');
     } catch (error) {
         const data = req.body;
 
         res.render('crypto/create', { error: error.message, data });
+    }
+});
+
+router.get('/details/:cryptoId', async (req, res) => {
+    const cryptoId = req.params.cryptoId;
+    const user = req.user;
+
+    try {
+        const crypto = await cryptoManager.getCryptoById(cryptoId).lean();
+
+        const isOwner = user?._id.toString() === crypto.owner?.toString();
+        const isBought = user?._id.toString() === crypto.boughtBy?.toString() && isOwner === false;
+
+        res.render('crypto/details', { crypto, isOwner, user, isBought });
+    } catch (error) {
+        res.render('404');
     }
 });
 
