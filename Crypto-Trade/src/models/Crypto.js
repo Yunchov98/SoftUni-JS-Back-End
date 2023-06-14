@@ -17,6 +17,10 @@ const cryptoSchema = new mongoose.Schema({
         type: String,
     },
 
+    payment: {
+        type: String,
+    },
+
     boughtBy: [{
         type: mongoose.Types.ObjectId,
         ref: 'User',
