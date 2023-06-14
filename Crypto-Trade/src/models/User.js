@@ -18,6 +18,16 @@ const userSchema = new mongoose.Schema({
     },
 });
 
+userSchema.path('email').validate(async function (email) {
+    try {
+        const usernameCount = await mongoose.models.User.countDocuments({ email });
+
+        return !usernameCount;
+    } catch (error) {
+        console.log(error);
+    }
+}, 'Email already exists');
+
 userSchema.virtual('confirmPassword')
     .set(function (value) {
         if (this.password !== value) {
