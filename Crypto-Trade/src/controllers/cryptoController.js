@@ -3,11 +3,17 @@ const router = require('express').Router();
 const { cryptoValidator } = require('../utils/validators');
 const cryptoManager = require('../managers/cryptoManager');
 
-router.get('/catalog', (req, res) => {
-    res.render('crypto/catalog');
+router.get('/catalog', async (req, res) => {
+    try {
+        const cryptos = await cryptoManager.getCryptos().lean();
+        console.log(cryptos);
+        res.render('crypto/catalog', { cryptos });
+    } catch (error) {
+        res.render('404');
+    }
 });
 
-router.get('/create', (req, res) => {
+router.get('/create', async (req, res) => {
     res.render('crypto/create');
 });
 
