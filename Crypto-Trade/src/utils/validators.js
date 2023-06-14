@@ -15,3 +15,17 @@ exports.loginValidator = (email, password) => {
         throw new Error('Wrong username or password');
     };
 };
+
+exports.cryptoValidator = (name, imageUrl, price, description, payment) => {
+    if (name.length < 1) {
+        throw new Error('Name field is required');
+    } else if (imageUrl.length < 1) {
+        throw new Error('Image field is required');
+    } else if (price.length < 1) {
+        throw new Error('Price field is required');
+    } else if (description.length < 1) {
+        throw new Error('Description field is required');
+    } else if (payment.length < 1) {
+        throw new Error('Payment method is required');
+    }
+};
