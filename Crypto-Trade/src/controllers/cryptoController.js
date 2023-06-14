@@ -6,7 +6,7 @@ const cryptoManager = require('../managers/cryptoManager');
 router.get('/catalog', async (req, res) => {
     try {
         const cryptos = await cryptoManager.getCryptos().lean();
-        console.log(cryptos);
+        
         res.render('crypto/catalog', { cryptos });
     } catch (error) {
         res.render('404');
@@ -63,6 +63,16 @@ router.get('/buy/:cryptoId', async (req, res) => {
         await cryptoManager.buyCrypto(cryptoId, req.user._id);
 
         res.redirect(`/crypto/details/${cryptoId}`);
+    } catch (error) {
+        res.render('404');
+    }
+});
+
+router.get('/delete/:cryptoId', async (req, res) => {
+    try {
+        await cryptoManager.deleteCrypto(req.params.cryptoId);
+
+        res.redirect('/crypto/catalog');
     } catch (error) {
         res.render('404');
     }
