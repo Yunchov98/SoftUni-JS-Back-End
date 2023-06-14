@@ -17,6 +17,13 @@ const userSchema = new mongoose.Schema({
     },
 });
 
+userSchema.virtual('confirmPassword')
+    .set(function (value) {
+        if (this.password !== value) {
+            throw new Error('Password missmatch');
+        }
+    });
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
