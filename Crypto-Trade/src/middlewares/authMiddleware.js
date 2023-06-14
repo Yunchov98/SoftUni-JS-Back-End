@@ -8,8 +8,8 @@ exports.auth = async (req, res, next) => {
         const decodedToken = await jwtPromises.verify(token, SECRET);
 
         req.user = decodedToken;
-        req.locals.user = decodedToken;
-        req.locals.isAuthenticated = true;
+        res.locals.user = decodedToken;
+        res.locals.isAuthenticated = true;
 
         next();
     } else {
