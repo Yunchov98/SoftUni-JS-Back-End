@@ -2,11 +2,13 @@ const router = require('express').Router();
 
 const { cryptoValidator } = require('../utils/validators');
 const cryptoManager = require('../managers/cryptoManager');
+const { getPaymentMethodsViewData } = require('../utils/viewHelper');
+const { changeCharacters } = require('../utils/editPaymentMethod');
 
 router.get('/catalog', async (req, res) => {
     try {
         const cryptos = await cryptoManager.getCryptos().lean();
-        
+
         res.render('crypto/catalog', { cryptos });
     } catch (error) {
         res.render('404');
@@ -21,16 +23,16 @@ router.post('/create', async (req, res) => {
     const { name, imageUrl, price, description, payment } = req.body;
 
     try {
-        cryptoValidator(name, imageUrl, price, description, payment);
+        const result = changeCharacters(payment);
 
-        await cryptoManager.createCrypto({
-            name,
-            imageUrl,
-            price: Number(price),
-            description,
-            payment,
-            owner: req.user._id,
-        });
+            await cryptoManager.createCrypto({
+                name,
+                imageUrl,
+                price: Number(price),
+                description,
+                payment: result,
+                owner: req.user._id,
+            });
 
         res.redirect('/crypto/catalog');
     } catch (error) {
@@ -73,6 +75,18 @@ router.get('/delete/:cryptoId', async (req, res) => {
         await cryptoManager.deleteCrypto(req.params.cryptoId);
 
         res.redirect('/crypto/catalog');
+    } catch (error) {
+        res.render('404');
+    }
+});
+
+router.get('/edit/:cryptoId', async (req, res) => {
+    try {
+        const crypto = await cryptoManager.getCryptoById(req.params.cryptoId).lean();
+
+        const options = getPaymentMethodsViewData(crypto.payment);
+
+        res.render('crypto/edit', { crypto, options });
     } catch (error) {
         res.render('404');
     }
