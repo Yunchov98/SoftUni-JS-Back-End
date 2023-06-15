@@ -47,10 +47,9 @@ cryptoSchema.path('price').validate(function (price) {
 });
 
 cryptoSchema.path('payment').validate(function (payment) {
-    if (payment !== 'Debit Card'
-        || payment !== 'Credit Card'
-        || payment !== 'Crypto Wallet'
-        || payment !== 'PayPal') {
+    const paymentes = ['crypto-wallet', 'debit-card', 'credit-card', 'paypal'];
+
+    if (!paymentes.includes(payment)) {
         throw new Error('Invalid payment method');
     }
 });
