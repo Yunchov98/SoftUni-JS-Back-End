@@ -4,11 +4,13 @@ const cryptoSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Name is required'],
+        minLength: [2, 'Name should be at least 2 characters long'],
     },
 
     imageUrl: {
         type: String,
         required: [true, 'Image URL is required'],
+        match: [/^https?:\/\//, 'URL should start with http:// or https://'],
     },
 
     price: {
@@ -19,6 +21,7 @@ const cryptoSchema = new mongoose.Schema({
     description: {
         type: String,
         required: [true, 'Description is required'],
+        minLength: [10, 'Description should be at least 10 characters long'],
     },
 
     payment: {
@@ -35,6 +38,21 @@ const cryptoSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'User',
     },
+});
+
+cryptoSchema.path('price').validate(function (price) {
+    if (price < 0) {
+        throw new Error('Price should be a positive number');
+    }
+});
+
+cryptoSchema.path('payment').validate(function (payment) {
+    if (payment !== 'Debit Card'
+        || payment !== 'Credit Card'
+        || payment !== 'Crypto Wallet'
+        || payment !== 'PayPal') {
+        throw new Error('Invalid payment method');
+    }
 });
 
 const Crypto = mongoose.model('Crypto', cryptoSchema);
