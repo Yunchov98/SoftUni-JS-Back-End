@@ -19,7 +19,7 @@ exports.auth = async (req, res, next) => {
 
 exports.isAuth = (req, res, next) => {
     if (!req.user) {
-        return res.redirect('user/login');
+        return res.render('user/login');
     }
 
     next();
