@@ -10,6 +10,7 @@ const photoSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
         required: [true, 'Image URL is required'],
+        match: [/^https?:\/\//, 'Invalid URL'],
     },
 
     age: {
@@ -31,26 +32,31 @@ const photoSchema = new mongoose.Schema({
         maxLength: [50, 'Location cannot be longer than 50 characters'],
     },
 
-    commentList: [{
-        id: {
-            type: String,
-        },
-        comment: {
-            type: String,
-        },
-    }],
-
     owner: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
     },
+
+    comments: [
+        {
+            user: {
+                type: mongoose.Types.ObjectId,
+                required: true,
+                ref: 'User'
+            },
+            comment: {
+                type: String,
+                required: [true, 'Comment is required!']
+            }
+        }
+    ],
 });
 
-photoSchema.path('imageUrl').validate(function (imageUrl) {
-    if (!imageUrl.startsWith('http')) {
-        throw new Error('Image URL should start with http:// or https://');
-    }
-});
+// photoSchema.path('imageUrl').validate(function (imageUrl) {
+//     if (!imageUrl.startsWith('http')) {
+//         throw new Error('Image URL should start with http:// or https://');
+//     }
+// });
 
 photoSchema.path('age').validate(function (age) {
     if (age < 1 || age > 100) {

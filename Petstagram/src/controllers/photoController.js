@@ -40,31 +40,33 @@ router.post('/create', isAuth, async (req, res) => {
 });
 
 router.get('/details/:photoId', async (req, res) => {
-    const user = req.user;
-
     try {
-        const photo = await photoManager.getPhotoById(req.params.photoId).lean();
+        const photo = await photoManager.getPhotoById(req.params.photoId).populate('comments.user').lean();
 
-        const commentList = photo.commentList;
         const isOwner = req.user?._id.toString() === photo.owner._id.toString();
-        const isNotOwner = req.user?._id.toString() !== photo.owner._id.toString();
 
-        res.render('pet/details', { photo, isOwner, isNotOwner, user, commentList });
+        res.render('pet/details', { photo, isOwner });
     } catch (error) {
         res.render('404');
     }
 });
 
-router.post('/details/:photoId', isAuth, async (req, res) => {
+router.post('/details/:photoId', async (req, res) => {
+    const photo = await photoManager.getPhotoById(req.params.photoId).populate('comments.user').lean();
+    const photoId = req.params.photoId;
+    const user = req.user._id;
     const { comment } = req.body;
+    const isOwner = req.user?._id.toString() === photo.owner._id.toString();
 
     try {
-        await photoManager.addComment(req.params.photoId, req.user.username, comment);
+        await photoManager.addComment(photoId, { user, comment });
 
-        res.redirect(`/pets/details/${req.params.photoId}`);
+        res.redirect(`/pets/details/${photoId}`);
     } catch (error) {
-        console.log(error);
+        const errorMessages = getErrorMessage(error);
+        res.render('pet/details', { errorMessages, isOwner, photo });
     }
+
 });
 
 router.get('/edit/:photoId', isAuth, async (req, res) => {

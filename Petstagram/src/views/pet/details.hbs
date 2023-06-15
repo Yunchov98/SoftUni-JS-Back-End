@@ -42,28 +42,28 @@
                         <p class="petName">Name: {{photo.name}}</p>
                         <p class="petAge">Age: {{photo.age}}</p>
                     </div>
-                    {{#if user}}
-                        {{#each commentList}}
-                            <div class="comments">
-                                <div class="comments-top">
-                                    <div class="userDetails">
-                                        <div class="comment-data">
-                                            <div class="profilepic">
-                                                <div class="profile_img">
-                                                    <div class="image">
-                                                        <!-- User Profile Image -->
-                                                        <img src="/images/person.png" alt="img8">
-                                                    </div>
-                                                </div>
+                    {{#each photo.comments}}
+                    <div class="comments">
+                        <div class="comments-top">
+                            <div class="userDetails">
+                                <div class="comment-data">
+                                    <div class="profilepic">
+                                        <div class="profile_img">
+                                            <div class="image">
+                                                <!-- User Profile Image -->
+                                                <img src="/images/person.png" alt="img8">
                                             </div>
-                                            <p><b>{{id}}</b>- {{comment}}</p>
                                         </div>
                                     </div>
+                                    <p><b>{{user.username}}</b>- {{comment}}</p>
                                 </div>
                             </div>
-                        {{/each}}
                         </div>
-                        {{#if isNotOwner}}
+                    </div>
+                    {{/each}}
+                    </div>
+                    {{#if isAuthenticated}}
+                    {{#unless isOwner}}
                         <div class="addComments">
                             <form method="POST">
                                 <textarea id="comment-textarea" name="comment" cols="40" rows="10"
@@ -71,7 +71,7 @@
                                 <button type="submit">Post</button>
                             </form>
                         </div>
-                        {{/if}}
+                    {{/unless}}
                 {{/if}}
             </div>
         </div>
