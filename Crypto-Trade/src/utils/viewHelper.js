@@ -1,13 +1,17 @@
+const { changeCharacters } = require('./editPaymentMethod');
+
 exports.getPaymentMethodsViewData = (payment) => {
     const paymentMethods = [
-        'Crypto Wallet',
-        'Credit Card',
-        'Debit Card',
-        'PayPayl',
+        'crypto-wallet',
+        'credit-card',
+        'debit-card',
+        'paypal',
     ];
 
+    // const result = 
+
     const options = paymentMethods.map(paymentMethod => ({
-        paymentMethod,
+        paymentMethod: changeCharacters(paymentMethod),
         value: paymentMethod,
         selected: payment === paymentMethod,
     }));
