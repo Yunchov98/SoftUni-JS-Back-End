@@ -8,7 +8,7 @@ const { isAuth } = require('../middlewares/authMiddleware');
 
 router.get('/catalog', async (req, res) => {
     try {
-        const cryptos = await cryptoManager.getCryptos().lean();
+        const cryptos = await cryptoManager.getCryptos();
 
         res.render('crypto/catalog', { cryptos });
     } catch (error) {
@@ -24,14 +24,14 @@ router.post('/create', isAuth, async (req, res) => {
     const { name, imageUrl, price, description, payment } = req.body;
 
     try {
-        const result = changeCharacters(payment);
+        // const result = changeCharacters(payment);
 
         await cryptoManager.createCrypto({
             name,
             imageUrl,
             price: Number(price),
             description,
-            payment: result,
+            payment,
             owner: req.user._id,
         });
 
