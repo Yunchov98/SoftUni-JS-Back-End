@@ -4,7 +4,7 @@ const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 
 exports.register = async (userData) => {
-    const createdUser = User.create(userData);
+    const createdUser = await User.create(userData);
 
     const token = await generateToken(createdUser);
 
