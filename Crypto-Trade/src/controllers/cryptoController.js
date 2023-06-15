@@ -102,9 +102,13 @@ router.post('/edit/:cryptoId', isAuth, async (req, res) => {
 
         res.redirect(`/crypto/details/${cryptoId}`);
     } catch (error) {
+        const crypto = req.body;
+        
+        const options = getPaymentMethodsViewData(crypto.payment);
+
         const errorMessages = getErrorMessage(error);
 
-        res.render('crypto/edit', { errorMessages });
+        res.render('crypto/edit', { errorMessages, crypto, options });
     }
 });
 
