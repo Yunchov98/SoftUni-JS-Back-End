@@ -8,7 +8,7 @@ exports.buyCrypto = (cryptoId, userId) => Crypto.findByIdAndUpdate(cryptoId, { $
 
 exports.deleteCrypto = (cryptoId) => Crypto.findByIdAndDelete(cryptoId);
 
-exports.updateCrypto = (cryptoId, cryptoData) => Crypto.findByIdAndUpdate(cryptoId, cryptoData);
+exports.updateCrypto = (cryptoId, cryptoData) => Crypto.findByIdAndUpdate(cryptoId, cryptoData, { runValidators: true });
 
 exports.getCryptos = async (search, select) => {
     try {
