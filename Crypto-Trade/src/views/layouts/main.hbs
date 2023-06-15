@@ -30,13 +30,13 @@
     <!-- In case of error, you should display div with class "errorContainer" -->
     <!-- You can choose to display the first error or all of them (error message/s in your opinion) -->
 
-    {{#if error}}
+    {{#each errorMessages}}
     <div>
         <div class="errorContainer">
-            <p>{{error}}</p>
+            <p>{{this}}</p>
         </div>
     </div>
-    {{/if}}
+    {{/each}}
     {{{body}}}
     <footer>
         <p>Back-End 2022</p>
