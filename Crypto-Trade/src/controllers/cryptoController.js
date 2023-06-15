@@ -1,6 +1,5 @@
 const router = require('express').Router();
 
-const { cryptoValidator } = require('../utils/validators');
 const cryptoManager = require('../managers/cryptoManager');
 const { getPaymentMethodsViewData } = require('../utils/viewHelper');
 const { changeCharacters } = require('../utils/editPaymentMethod');
@@ -91,5 +90,6 @@ router.get('/edit/:cryptoId', async (req, res) => {
         res.render('404');
     }
 });
+
 
 module.exports = router;

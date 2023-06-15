@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const userManager = require('../managers/userManager');
 const { TOKEN_KEY } = require('../configs/utils');
-const { loginValidator, registerValidator } = require('../utils/validators');
+const { getErrorMessage } = require('../utils/errorHelper');
 
 router.get('/register', (req, res) => {
     res.render('user/register');
@@ -12,14 +12,13 @@ router.post('/register', async (req, res) => {
     const { username, email, password, confirmPassword } = req.body;
 
     try {
-        registerValidator(username, email, password, confirmPassword);
-
         await userManager.register({ username, email, password, confirmPassword });
 
         res.redirect('/');
     } catch (error) {
+        const errorMessages = getErrorMessage(error);
         const { username, email } = req.body;
-        res.render('user/register', { error: error.message, username, email });
+        res.render('user/register', { errorMessages, username, email });
     }
 });
 
@@ -31,15 +30,14 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        loginValidator(email, password);
-
         const token = await userManager.login(email, password);
 
         res.cookie(TOKEN_KEY, token, { httpOnly: true });
 
         res.redirect('/');
     } catch (error) {
-        res.render('user/login', { error: error.message });
+        const errorMessages = getErrorMessage(error);
+        res.render('user/login', { errorMessages });
     }
 });
 
