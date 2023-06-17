@@ -1,6 +1,8 @@
 const jwtPromises = require('../lib/jwtPromises');
 const { TOKEN_KEY, SECRET } = require('../configs/utils');
 
+const { loginPage } = require('../utils/routes');
+
 exports.auth = async (req, res, next) => {
     const token = req.cookies[TOKEN_KEY];
 
@@ -15,4 +17,12 @@ exports.auth = async (req, res, next) => {
     } else {
         next();
     }
+};
+
+exports.isAuth = (req, res, next) => {
+    if (!req.user) {
+        return res.redirect(`/${loginPage}`);
+    }
+
+    next();
 };
