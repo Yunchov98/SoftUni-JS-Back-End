@@ -27,4 +27,19 @@ router.get(login, (req, res) => {
     res.render(loginPage);
 });
 
+router.post(login, async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const token = await userManager.login(email, password);
+
+        res.cookie(TOKEN_KEY, token);
+
+        res.redirect(home);
+    } catch (error) {
+        // TODO: CATCH THE ERROR AND RENDER IT !
+        console.log(`Error: ${error}`);
+    }
+});
+
 module.exports = router;

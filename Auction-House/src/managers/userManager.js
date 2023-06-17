@@ -10,3 +10,21 @@ exports.register = async (userData) => {
 
     return token;
 };
+
+exports.login = async (email, password) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new Error('Wrong username or password');
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+        throw new Error('Wrong usrenam or password');
+    }
+
+    const token = genrateToken(user);
+
+    return token;
+};
