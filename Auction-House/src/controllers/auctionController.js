@@ -1,10 +1,16 @@
 const router = require('express').Router();
 
 const auctionManager = require('../managers/auctionManager');
-const { publish, publishPage, browse, browsePage } = require('../utils/routes');
+const { publish, publishPage, browse, browsePage, errorPage } = require('../utils/routes');
 
-router.get(browse, (req, res) => {
-    res.render(browsePage);
+router.get(browse, async (req, res) => {
+    try {
+        const offers = await auctionManager.getAll().lean();
+
+        res.render(browsePage, { offers });
+    } catch (error) {
+        res.render(errorPage);
+    }
 });
 
 router.get(publish, (req, res) => {
