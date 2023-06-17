@@ -2,25 +2,24 @@
 <section id="catalog-section">
 
     <h1 class="item">
-        Fishing Boat
+        {{offer.title}}
     </h1>
     <div class="item padded">
 
         <div class="layout right large">
 
             <div class="col">
-                <img src="/assets/boat.jpg" class="img-large">
+                <img src="{{offer.imageUrl}}" class="img-large">
             </div>
 
             <div class="content pad-med">
 
                 <p>In category: <strong>Vehicles</strong></p>
-                <p>Excellent condition. Onboard diesel motor, upholstered cockpit, fishing sonar. Includes
-                    trailer.</p>
+                <p>{{offer.description}}</p>
 
                 <div class="align-center">
                     <div>
-                        Current price: $<strong>5000</strong>
+                        Current price: $<strong>{{offer.price}}</strong>
                     </div>
 
                     <!-- If current user can place a bid -->
@@ -39,7 +38,7 @@
             </div>
         </div>
 
-        <footer>Listed by Peter Jackson</footer>
+        <footer>Listed by {{fullName}}</footer>
     </div>
 
 </section>
