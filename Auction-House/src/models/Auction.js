@@ -23,7 +23,6 @@ const auctionSchema = new mongoose.Schema({
 
     price: {
         type: Number,
-        required: [true, 'Price is required'],
     },
 
     author: {
@@ -31,15 +30,23 @@ const auctionSchema = new mongoose.Schema({
         ref: 'User',
     },
 
-    bidder: {
-        type: mongoose.Types.ObjectId,
-        ref: 'User',
-    },
+    bidder: [
+        {
+            user: {
+                type: mongoose.Types.ObjectId,
+                ref: 'User',
+            },
+
+            bid: {
+                type: Number,
+            }
+        }
+    ],
 });
 
 auctionSchema.path('price').validate(function (price) {
-    if (price < 0) {
-        throw new Error('Price cannot be a negative number');
+    if (price < 1) {
+        throw new Error('Price is required and cannot be a negative number');
     }
 });
 
