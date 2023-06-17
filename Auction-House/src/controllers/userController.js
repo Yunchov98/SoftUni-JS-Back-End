@@ -4,6 +4,7 @@ const userManager = require('../managers/userManager');
 const { register, registerPage, login, loginPage, home, logout } = require('../utils/routes');
 const { TOKEN_KEY } = require('../configs/utils');
 const { isAuth } = require('../middlewares/authMiddleware');
+const { getErrorMessages } = require('../utils/errorHelper');
 
 router.get(register, (req, res) => {
     res.render(registerPage);
@@ -19,8 +20,7 @@ router.post(register, async (req, res) => {
 
         res.redirect(home);
     } catch (error) {
-        // TODO: CATCH THE ERROR AND RENDR IT !
-        console.log(`Error: ${error}`);
+        res.render(registerPage, { errors: getErrorMessages(error), email, firstName, lastName });
     }
 });
 
@@ -38,8 +38,7 @@ router.post(login, async (req, res) => {
 
         res.redirect(home);
     } catch (error) {
-        // TODO: CATCH THE ERROR AND RENDER IT !
-        console.log(`Error: ${error}`);
+        res.render(loginPage, { errors: getErrorMessages(error) });
     }
 });
 
