@@ -22,28 +22,33 @@
                     <li>
                         <a href="/auctions/browse">Browse</a>
                     </li>
+                    {{#if isAuthenticated}}
+                        <li class="user">
+                            <a href="/auctions/create">Publish</a>
+                        </li>
+
+                        <!-- Bonus action -->
+                        <!--
+                        <li class="user">
+                            <a href="#">Closed Auctions</a>
+                        </li>
+                        -->
+
+                        <li class="user">
+                            <a href="/users/logout">Logout</a>
+                        </li>
+                        {{else}}
+                        <li class="guest">
+                            <a href="/users/register">Register</a>
+                        </li>
+                        <li class="guest">
+                            <a href="/users/login">Login</a>
+                        </li>
+                    {{/if}}
                     <!-- User actions -->
-                    <li class="user">
-                        <a href="/auctions/create">Publish</a>
-                    </li>
 
-                    <!-- Bonus action -->
-                    <!--
-                    <li class="user">
-                        <a href="#">Closed Auctions</a>
-                    </li>
-                    -->
-
-                    <li class="user">
-                        <a href="/users/logout">Logout</a>
-                    </li>
                     <!-- Guest actions -->
-                    <li class="guest">
-                        <a href="/users/register">Register</a>
-                    </li>
-                    <li class="guest">
-                        <a href="/users/login">Login</a>
-                    </li>
+
                 </ul>
             </nav>
         </header>
