@@ -3,14 +3,16 @@ const router = require('express').Router();
 const userManager = require('../managers/userManager');
 const { register, registerPage, login, loginPage, home, logout } = require('../utils/routes');
 const { TOKEN_KEY } = require('../configs/utils');
-const { isAuth } = require('../middlewares/authMiddleware');
+const { isAuth, isUserAuth } = require('../middlewares/authMiddleware');
 const { getErrorMessages } = require('../utils/errorHelper');
 
-router.get(register, (req, res) => {
+
+
+router.get(register, isUserAuth, (req, res) => {
     res.render(registerPage);
 });
 
-router.post(register, async (req, res) => {
+router.post(register, isUserAuth, async (req, res) => {
     const { email, firstName, lastName, password, confirmPassword } = req.body;
 
     try {
@@ -24,11 +26,11 @@ router.post(register, async (req, res) => {
     }
 });
 
-router.get(login, (req, res) => {
+router.get(login, isUserAuth, (req, res) => {
     res.render(loginPage);
 });
 
-router.post(login, async (req, res) => {
+router.post(login, isUserAuth, async (req, res) => {
     const { email, password } = req.body;
 
     try {
