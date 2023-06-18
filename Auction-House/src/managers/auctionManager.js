@@ -10,6 +10,8 @@ exports.updatePrice = (offerId, price) => Auction.findByIdAndUpdate(offerId, pri
 
 exports.updateOffer = (offerId, offerData) => Auction.findByIdAndUpdate(offerId, offerData, { runValidators: true });
 
+exports.deleteOffer = (offerId) => Auction.findByIdAndDelete(offerId);
+
 exports.bidOffer = async (offerId, bidData) => {
     const offer = await Auction.findById(offerId);
 

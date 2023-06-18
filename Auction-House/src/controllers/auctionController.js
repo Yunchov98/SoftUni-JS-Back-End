@@ -1,11 +1,13 @@
 const router = require('express').Router();
 
 const auctionManager = require('../managers/auctionManager');
-const { publish, publishPage, browse, browsePage, errorPage, details, detailsPage, ownerDetails, edit, editPage } = require('../utils/routes');
+const userManager = require('../managers/userManager');
+
+const { publish, publishPage, browse, browsePage, errorPage, details, detailsPage, ownerDetails, edit, editPage, del, closed, closedAuctions } = require('../utils/routes');
 const { getErrorMessages } = require('../utils/errorHelper');
-const { changeCahracters } = require('../utils/editCategoryCahrs');
 const { getDetailsPageData } = require('../utils/getDetailsPageData');
 const { getCategoryViewData } = require('../utils/viewHelper');
+const { isAuth, isUser } = require('../middlewares/authMiddleware');
 
 router.get(browse, async (req, res) => {
     try {
@@ -17,11 +19,11 @@ router.get(browse, async (req, res) => {
     }
 });
 
-router.get(publish, (req, res) => {
+router.get(publish, isAuth, (req, res) => {
     res.render(publishPage);
 });
 
-router.post(publish, async (req, res) => {
+router.post(publish, isAuth, async (req, res) => {
     const { title, category, imageUrl, price, description } = req.body;
 
     try {
@@ -63,7 +65,7 @@ router.get(details, async (req, res) => {
     }
 });
 
-router.post(details, async (req, res) => {
+router.post(details, isAuth, async (req, res) => {
     const offerId = req.params.offerId;
     const user = req.user;
     const { bid } = req.body;
@@ -90,7 +92,7 @@ router.post(details, async (req, res) => {
     }
 });
 
-router.get(edit, async (req, res) => {
+router.get(edit, isAuth, async (req, res) => {
     const offerId = req.params.offerId;
 
     try {
@@ -106,7 +108,7 @@ router.get(edit, async (req, res) => {
     }
 });
 
-router.post(edit, async (req, res) => {
+router.post(edit, isAuth, async (req, res) => {
     const offerId = req.params.offerId;
     const { title, select, imageUrl, price, description } = req.body;
 
@@ -119,6 +121,29 @@ router.post(edit, async (req, res) => {
         const options = getCategoryViewData(offer.category);
 
         res.render(editPage, { errors: getErrorMessages(error), offer, options });
+    }
+});
+
+router.get(del, isAuth, async (req, res) => {
+    try {
+        await auctionManager.deleteOffer(req.params.offerId);
+
+        res.redirect(`/${browsePage}`);
+    } catch (error) {
+        res.render(errorPage);
+    }
+});
+
+router.get((`${closed}/:offerId`), async (req, res) => {
+
+    try {
+        const offer = await auctionManager.getOffer(req.params.offerId).populate('bidder.user');
+        
+       console.log(offer.author.bidder);
+
+        res.render(closedAuctions);
+    } catch (error) {
+        console.log(error);
     }
 });
 
